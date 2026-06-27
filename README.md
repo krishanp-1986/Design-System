@@ -6,6 +6,18 @@ Originally built for [Cafe Finder](https://github.com/krishanp-1986/Cafe-Finder)
 
 **Repository:** [github.com/krishanp-1986/Design-System](https://github.com/krishanp-1986/Design-System)
 
+## Screenshots
+
+[`TokenCatalogView`](Sources/DesignSystem/Catalog/TokenCatalogView.swift) renders a live gallery of your design tokens — brand colors, backgrounds, text styles, and typography. Run **DesignSystemDemo** on a simulator to browse it interactively.
+
+<p align="center">
+  <img src="docs/screenshots/token-catalog-light.png" alt="Token catalog in light mode" width="300" />
+  &nbsp;&nbsp;
+  <img src="docs/screenshots/token-catalog-dark.png" alt="Token catalog in dark mode" width="300" />
+</p>
+
+<p align="center"><em>Light mode (left) · Dark mode (right)</em></p>
+
 ## Features
 
 - **JSON-driven tokens** — edit `tokens.json` without recompiling Swift for most design changes
