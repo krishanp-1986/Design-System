@@ -1,0 +1,42 @@
+name: DesignSystemCI
+options:
+  bundleIdPrefix: com.krishanp
+  deploymentTarget:
+    iOS: "17.0"
+packages:
+  DesignSystem:
+    path: ..
+targets:
+  DesignSystemDemoRunner:
+    type: application
+    platform: iOS
+    sources:
+      - path: ../Examples/DesignSystemDemo
+    dependencies:
+      - package: DesignSystem
+        product: DesignSystem
+    settings:
+      GENERATE_INFOPLIST_FILE: YES
+      PRODUCT_BUNDLE_IDENTIFIER: com.krishanp.DesignSystemDemo
+      INFOPLIST_KEY_UILaunchScreen_Generation: YES
+      ENABLE_TESTABILITY: YES
+      SWIFT_VERSION: "6.0"
+  DesignSystemDemoUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: ../Examples/DesignSystemDemoUITests
+    dependencies:
+      - target: DesignSystemDemoRunner
+    settings:
+      GENERATE_INFOPLIST_FILE: YES
+      SWIFT_VERSION: "6.0"
+schemes:
+  DesignSystemCI:
+    build:
+      targets:
+        DesignSystemDemoRunner: all
+        DesignSystemDemoUITests: [test]
+    test:
+      targets:
+        - DesignSystemDemoUITests

@@ -1,0 +1,39 @@
+name: UI Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ui-tests:
+    name: UI Tests
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate CI Xcode project
+        working-directory: CI
+        run: xcodegen generate
+
+      - name: Run UI tests
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project CI/DesignSystemCI.xcodeproj \
+            -scheme DesignSystemCI \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -only-testing:DesignSystemDemoUITests \
+            -resultBundlePath UITestResults.xcresult
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-test-results
+          path: UITestResults.xcresult

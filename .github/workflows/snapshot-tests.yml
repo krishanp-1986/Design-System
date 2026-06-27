@@ -1,0 +1,31 @@
+name: Snapshot Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  snapshot-tests:
+    name: Snapshot Tests
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run snapshot tests
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -scheme DesignSystem-Package \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -only-testing:DesignSystemSnapshotTests \
+            -resultBundlePath SnapshotTestResults.xcresult
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: snapshot-test-results
+          path: SnapshotTestResults.xcresult

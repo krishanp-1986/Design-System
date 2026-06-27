@@ -1,5 +1,9 @@
 # DesignSystem
 
+[![Unit Tests](https://github.com/krishanp-1986/Design-System/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/krishanp-1986/Design-System/actions/workflows/unit-tests.yml)
+[![Snapshot Tests](https://github.com/krishanp-1986/Design-System/actions/workflows/snapshot-tests.yml/badge.svg)](https://github.com/krishanp-1986/Design-System/actions/workflows/snapshot-tests.yml)
+[![UI Tests](https://github.com/krishanp-1986/Design-System/actions/workflows/ui-tests.yml/badge.svg)](https://github.com/krishanp-1986/Design-System/actions/workflows/ui-tests.yml)
+
 A SwiftUI design token library for iOS apps. Tokens are defined in JSON, loaded at runtime, and exposed through type-safe Swift APIs for colors, typography, spacing, radius, shadows, and component sizing.
 
 Originally built for [Cafe Finder](https://github.com/krishanp-1986/Cafe-Finder) and reusable in any SwiftUI project that needs a consistent, themeable visual language.
@@ -250,6 +254,9 @@ The demo loads the default theme and displays `TokenCatalogView`.
 ```
 Design-System/
 ├── Package.swift
+├── CI/
+│   └── project.yml                 # XcodeGen spec for UI test runner app
+├── .github/workflows/              # Unit, snapshot, and UI test CI
 ├── Sources/
 │   └── DesignSystem/
 │       ├── DesignSystem.swift      # Configuration & environment
@@ -272,7 +279,23 @@ From the package directory:
 swift test
 ```
 
-Or in Xcode: select the **DesignSystem** package and press **⌘U**.
+Or in Xcode: open the package and press **⌘U**.
+
+| Suite | Command |
+|---|---|
+| Unit tests | `xcodebuild test -scheme DesignSystem-Package -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:DesignSystemTests` |
+| Snapshot tests | `xcodebuild test -scheme DesignSystem-Package -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:DesignSystemSnapshotTests` |
+| UI tests | `cd CI && xcodegen generate && xcodebuild test -project DesignSystemCI.xcodeproj -scheme DesignSystemCI -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:DesignSystemDemoUITests` |
+
+### Continuous Integration
+
+GitHub Actions runs on every push and pull request to `main`:
+
+- **[Unit Tests](.github/workflows/unit-tests.yml)** — Swift Testing token and theme coverage
+- **[Snapshot Tests](.github/workflows/snapshot-tests.yml)** — visual regression for `TokenCatalogView`
+- **[UI Tests](.github/workflows/ui-tests.yml)** — XCTest UI tests via a minimal runner app (`CI/project.yml`)
+
+Status badges are shown at the top of this README.
 
 Snapshot tests use [swift-snapshot-testing](https://github.com/pointfreeco/swift-snapshot-testing). Re-record snapshots when you intentionally change tokens:
 

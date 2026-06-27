@@ -1,0 +1,8 @@
+.DS_Store
+.build/
+.swiftpm/configuration/
+.swiftpm/xcode/xcuserdata/
+DerivedData/
+CI/DesignSystemCI.xcodeproj/
+CI/DesignSystemCI.xcworkspace/
+.git/personal-github-credentials
